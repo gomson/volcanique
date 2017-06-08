@@ -1,0 +1,23 @@
+#Backup files
+*\~
+*swp
+*blend[0-9]
+
+#Annoying thumbs file that appears everywhere :)
+Thumbs.db
+
+#Mac DS_Store file
+.DS_Store
+
+#Emacs buffers
+\#*\#
+
+/\.idea
+
+/deps
+/build
+/_build
+conanbuildinfo.cmake
+conaninfo.txt
+*.pyc
+/Win32
