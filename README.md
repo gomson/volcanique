@@ -1,4 +1,5 @@
 Volcanique
 ----------
 
-A learning project, using Vulkan SDK
+Code written while following the [Vulkan Tutorial](https://vulkan-tutorial.com/)
+

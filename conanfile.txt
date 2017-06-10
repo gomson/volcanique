@@ -1,7 +1,6 @@
 [requires]
 glfw/master@dimi309/stable
 glm/0.9.8.4@dimi309/stable
-gtest/1.8.0@lasote/stable
 
 [generators]
 cmake
