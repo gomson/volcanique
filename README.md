@@ -25,7 +25,7 @@ GLM and GLFW, which are referenced by the code, are deployed by conan. In order 
 
 Depending on your Visual Studio version, you can get some compiler detection and linking errors. Feel free to [ask me](https://github.com/dimi309/volcanique/issues) and I'll be happy to help.
 
-Nonetheless, here's a sure-fire way to make sure that the above mentioned commands work just like that with Visual Studio 2017:
+Nonetheless, here's a sure-fire way to make the above mentioned commands work just like that with Visual Studio 2017:
 
 Set the vs150comntools environment variable:
 	
