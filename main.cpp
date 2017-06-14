@@ -9,6 +9,8 @@
 #include <iostream>
 #include <stdexcept>
 #include <functional>
+#include <string>
+#include <vector>
 
 const int WIDTH = 800;
 const int HEIGHT = 600;
@@ -24,6 +26,60 @@ public:
 private:
 
   GLFWwindow* window;
+  VkInstance instance;
+
+  void createInstance() {
+    VkApplicationInfo appInfo = {};
+    appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+    appInfo.pApplicationName = "Hello Triangle";
+    appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+    appInfo.pEngineName = "No Engine";
+    appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+    appInfo.apiVersion = VK_API_VERSION_1_0;
+
+    VkInstanceCreateInfo createInfo = {};
+    createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    createInfo.pApplicationInfo = &appInfo;
+
+    unsigned int glfwExtensionCount = 0;
+    const char** glfwExtensions;
+
+    glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+
+    std::cout << "Number of extensions required by GLFW: " << glfwExtensionCount << std::endl;
+    
+    createInfo.enabledExtensionCount = glfwExtensionCount;
+    createInfo.ppEnabledExtensionNames = glfwExtensions;
+
+    uint32_t extensionCount = 0;
+    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+    
+    std::vector<VkExtensionProperties> extensions(extensionCount);
+
+    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
+
+    std::cout << "available extensions:" << std::endl;
+
+    for (const auto& extension : extensions) {
+      std::cout << "\t" << extension.extensionName << std::endl;
+    }
+
+    for (unsigned int idx = 0; idx < glfwExtensionCount; ++idx) {
+      bool found = false;
+      for (const auto& extension : extensions) {
+	if (std::string(extension.extensionName) == std::string(glfwExtensions[idx]))
+	  found = true;
+      }
+      if (found) std::cout << "Extension " << glfwExtensions[idx] << " required by GLFW found." << std::endl;
+      else throw std::runtime_error("Extension " + std::string(glfwExtensions[idx]) + " not found!");
+    }
+
+    createInfo.enabledLayerCount = 0;
+    if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
+      throw std::runtime_error("failed to create instance!");
+	}
+
+  }
   
   void initWindow() {
     glfwInit();
@@ -35,6 +91,7 @@ private:
   }
   
   void initVulkan() {
+    createInstance();
     initWindow();
   }
 
@@ -45,6 +102,7 @@ private:
   }
 
   void cleanup() {
+    vkDestroyInstance(instance, nullptr);
     glfwDestroyWindow(window);
     glfwTerminate();
   }
